@@ -5,7 +5,7 @@ import { CreateThemeDTO } from './dto/theme.dto';
 const themes: CreateThemeDTO[] = [
   {
     name: 'rock bands',
-   cards: [
+    cards: [
       { name: 'rock band 1', img: 'url' },
       { name: 'rock band 2', img: 'url' },
       { name: 'rock band 3', img: 'url' },
