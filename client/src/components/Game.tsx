@@ -17,12 +17,20 @@ export interface CardsUpdated extends Cards {
 export const Game = () => {
   const [flippedCards, setFlippedCards] = useState<number[]>([]);
   const [matchedPairs, setMatchedPairs] = useState<string[]>([]);
-  const shuffleData = random(
-    data.map((card, index) => ({ ...card, index: index, flipped: false }))
-  );
+  const dataRandom = random(data);
+  const shuffleData = dataRandom.map((card, index) => ({
+    ...card,
+    index: index,
+    flipped: false,
+  }));
   const [cards, setCards] = useState<CardsUpdated[]>(shuffleData);
+  let [clickCount, setClickCount] = useState<number>(0);
+  let [pairCount, setPairCount] = useState<number>(0);
+
+  //  FUNCION AL CLICK !
 
   const handleCardClick = (cardIndex: number) => {
+    setClickCount((prevClickCount) => prevClickCount + 1);
     if (
       flippedCards.length === 2 ||
       matchedPairs.includes(cards[cardIndex].name)
@@ -43,7 +51,6 @@ export const Game = () => {
     if (flippedCards.length === 1 && flippedCards[0] !== cardIndex) {
       if (cards[flippedCards[0]].name === cards[cardIndex].name) {
         setMatchedPairs([...matchedPairs, cards[cardIndex].name]);
-        console.log("hola");
       }
     }
   };
@@ -61,19 +68,13 @@ export const Game = () => {
           }
           return card;
         });
-        console.log(cards);
-        console.log(flippedCards);
-        console.log("matched cards");
-        console.log(matchedPairs);
 
         setCards(updatedCards);
         setFlippedCards([]);
       }, 1000);
-
+      console.log(clickCount);
       return () => clearTimeout(timeout);
     }
-    console.log(cards);
-    console.log(flippedCards);
   }, [flippedCards, cards, matchedPairs]);
 
   return (
@@ -99,7 +100,7 @@ export const Game = () => {
       <div id="score">
         <h2>Score </h2>
         <p>
-          Pairs Clicked: <span id="pairs_clicked">0</span>
+          Pairs Clicked: <span id="pairs_clicked">{clickCount}</span>
         </p>
         <p>
           Pairs Guessed: <span id="pairs_guessed">0</span>
