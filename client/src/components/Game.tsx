@@ -24,10 +24,13 @@ export const Game = () => {
     flipped: false,
   }));
   const [cards, setCards] = useState<CardsUpdated[]>(shuffleData);
+  let [clickCount, setClickCount] = useState<number>(0);
+  let [pairCount, setPairCount] = useState<number>(0);
 
   //  FUNCION AL CLICK !
 
   const handleCardClick = (cardIndex: number) => {
+    setClickCount((prevClickCount) => prevClickCount + 1);
     if (
       flippedCards.length === 2 ||
       matchedPairs.includes(cards[cardIndex].name)
@@ -46,12 +49,8 @@ export const Game = () => {
     setFlippedCards([...flippedCards, cardIndex]);
 
     if (flippedCards.length === 1 && flippedCards[0] !== cardIndex) {
-      console.log("click en cartas distintas");
-      console.log(cards[flippedCards[0]].name);
-      console.log(flippedCards[0]);
       if (cards[flippedCards[0]].name === cards[cardIndex].name) {
         setMatchedPairs([...matchedPairs, cards[cardIndex].name]);
-        console.log("hola");
       }
     }
   };
@@ -62,10 +61,8 @@ export const Game = () => {
         const updatedCards = cards.map((card) => {
           if (flippedCards.includes(card.index)) {
             if (matchedPairs.includes(card.name)) {
-              console.log("funciona");
               return { ...card, flipped: true };
             } else {
-              console.log("este es el else");
               return { ...card, flipped: false };
             }
           }
@@ -75,8 +72,7 @@ export const Game = () => {
         setCards(updatedCards);
         setFlippedCards([]);
       }, 1000);
-      console.log(cards);
-      console.log(flippedCards);
+      console.log(clickCount);
       return () => clearTimeout(timeout);
     }
   }, [flippedCards, cards, matchedPairs]);
@@ -104,7 +100,7 @@ export const Game = () => {
       <div id="score">
         <h2>Score </h2>
         <p>
-          Pairs Clicked: <span id="pairs_clicked">0</span>
+          Pairs Clicked: <span id="pairs_clicked">{clickCount}</span>
         </p>
         <p>
           Pairs Guessed: <span id="pairs_guessed">0</span>
