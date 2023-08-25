@@ -6,7 +6,7 @@ function ThemeFetcher() {
     const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch('http://localhost3000/api/theme') 
+    fetch('http://localhost:3000/theme') 
       .then(response => response.json())
       .then(data => {
         const formattedThemes: Theme[] = data.map((theme: any) => ({

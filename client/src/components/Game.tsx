@@ -1,6 +1,10 @@
 import { random } from "@/utils/random";
 import data from "../data/data.json";
 import { useEffect, useState } from "react";
+import ThemeFetcher from '../service/ThemeCompleteFetch';
+
+
+
 
 export interface Cards {
   name: string;
@@ -26,6 +30,14 @@ export const Game = () => {
   const [cards, setCards] = useState<CardsUpdated[]>(shuffleData);
   let [clickCount, setClickCount] = useState<number>(0);
   let [pairCount, setPairCount] = useState<number>(0);
+  
+  const { themes, loading } = ThemeFetcher();
+
+    
+console.log(themes)
+
+
+
 
   //  FUNCION AL CLICK !
 
@@ -77,6 +89,8 @@ export const Game = () => {
       return () => clearTimeout(timeout);
     }
   }, [flippedCards, cards, matchedPairs]);
+
+
 
   return (
     <>
