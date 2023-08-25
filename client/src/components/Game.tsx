@@ -61,6 +61,7 @@ export const Game = () => {
         const updatedCards = cards.map((card) => {
           if (flippedCards.includes(card.index)) {
             if (matchedPairs.includes(card.name)) {
+              setPairCount((prevPairCount) => prevPairCount + 0.5);
               return { ...card, flipped: true };
             } else {
               return { ...card, flipped: false };
@@ -72,7 +73,7 @@ export const Game = () => {
         setCards(updatedCards);
         setFlippedCards([]);
       }, 1000);
-      console.log(clickCount);
+
       return () => clearTimeout(timeout);
     }
   }, [flippedCards, cards, matchedPairs]);
@@ -100,10 +101,10 @@ export const Game = () => {
       <div id="score">
         <h2>Score </h2>
         <p>
-          Pairs Clicked: <span id="pairs_clicked">{clickCount}</span>
+          Cards Clicked: <span id="pairs_clicked">{clickCount}</span>
         </p>
         <p>
-          Pairs Guessed: <span id="pairs_guessed">0</span>
+          Pairs Guessed: <span id="pairs_guessed">{pairCount}</span>
         </p>
       </div>
     </>
