@@ -17,10 +17,15 @@ export interface CardsUpdated extends Cards {
 export const Game = () => {
   const [flippedCards, setFlippedCards] = useState<number[]>([]);
   const [matchedPairs, setMatchedPairs] = useState<string[]>([]);
-  const shuffleData = random(
-    data.map((card, index) => ({ ...card, index: index, flipped: false }))
-  );
+  const dataRandom = random(data);
+  const shuffleData = dataRandom.map((card, index) => ({
+    ...card,
+    index: index,
+    flipped: false,
+  }));
   const [cards, setCards] = useState<CardsUpdated[]>(shuffleData);
+
+  //  FUNCION AL CLICK !
 
   const handleCardClick = (cardIndex: number) => {
     if (
@@ -41,6 +46,9 @@ export const Game = () => {
     setFlippedCards([...flippedCards, cardIndex]);
 
     if (flippedCards.length === 1 && flippedCards[0] !== cardIndex) {
+      console.log("click en cartas distintas");
+      console.log(cards[flippedCards[0]].name);
+      console.log(flippedCards[0]);
       if (cards[flippedCards[0]].name === cards[cardIndex].name) {
         setMatchedPairs([...matchedPairs, cards[cardIndex].name]);
         console.log("hola");
@@ -54,26 +62,23 @@ export const Game = () => {
         const updatedCards = cards.map((card) => {
           if (flippedCards.includes(card.index)) {
             if (matchedPairs.includes(card.name)) {
+              console.log("funciona");
               return { ...card, flipped: true };
             } else {
+              console.log("este es el else");
               return { ...card, flipped: false };
             }
           }
           return card;
         });
-        console.log(cards);
-        console.log(flippedCards);
-        console.log("matched cards");
-        console.log(matchedPairs);
 
         setCards(updatedCards);
         setFlippedCards([]);
       }, 1000);
-
+      console.log(cards);
+      console.log(flippedCards);
       return () => clearTimeout(timeout);
     }
-    console.log(cards);
-    console.log(flippedCards);
   }, [flippedCards, cards, matchedPairs]);
 
   return (
